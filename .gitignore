@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+app/store/index.faiss
+app/store/meta.json
