@@ -1,4 +1,11 @@
-"""Retrieval layer using FAISS and sentence-transformers."""
+"""Retrieval layer using FAISS and sentence-transformers.
+
+The MVP favors this pairing because it is fully self-hostable, fast on CPU-only
+hardware, and easy to reason about for a corpus that comfortably fits into a
+single FAISS `IndexFlatIP`. The surrounding plumbing keeps the metadata schema
+and scoring hooks generic so we can migrate to a managed vector database or
+plug in heavier cross-encoder rerankers when scale demands it.
+"""
 from __future__ import annotations
 
 import json
