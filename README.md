@@ -150,3 +150,25 @@ The MVP targets:
 Future enhancements include migrating to Qdrant, integrating cross-encoder
 reranking, function-calling outputs, advanced PII detection (spaCy/Presidio),
 and OCR support for scanned PDFs.
+
+## Why sentence-transformers + FAISS today?
+
+The current stack intentionally favors the lightweight combination of
+**sentence-transformers** and a local **FAISS** index because it:
+
+- Keeps ingestion and retrieval entirely offline/air-gapped, matching the
+  compliance expectations for handling sensitive administrative documents.
+- Ships with zero external services to operate, making it cheap to run on a
+  single machine (CPU-only if necessary) and easy to containerize for pilots.
+- Provides deterministic cosine similarity search with excellent recall for the
+  legal-sized corpus we target (<50k fragments) while staying within a tiny
+  memory footprint.
+
+Alternatives absolutely exist—vector databases such as **Qdrant**, **Milvus**,
+or **Weaviate** would offer managed storage, horizontal scaling, and hybrid
+filtering. Likewise, upgrading to cross-encoder reranking models or larger
+embedding models (e.g., `text-embedding-3-large`) could boost quality at the
+expense of latency and cost. For the MVP we prioritised operability and
+on-premise friendliness, but the ingestion metadata schema and retrieval
+service have been designed so we can swap in those heavier options when the
+corpus, traffic, or accuracy requirements demand it.
