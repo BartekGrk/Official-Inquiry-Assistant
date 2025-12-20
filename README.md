@@ -11,6 +11,7 @@ prompt assembly, LLM invocation and rigorous post-processing.
 - Retrieval layer powered by **sentence-transformers** embeddings and a local
   **FAISS** index with heuristic reranking for binding laws and document
   recency
+- LLM calls default to **Gemini Flash** (JSON mode) with optional OpenAI fallback
 - Hybrid legal-aware chunking that respects articles/paragraphs and token
   budgets (~1000 tokens with 150-token overlap)
 - Prompt builder applying system rules, JSON-schema hints, and PII masking prior
@@ -34,7 +35,7 @@ app/
 ├── retrieval.py           # FAISS retrieval + reranking
 ├── schemas.py             # Pydantic models & JSON contracts
 └── services/
-    └── llm_client.py      # OpenAI chat completion client
+    └── llm_client.py      # Gemini/OpenAI chat completion client
 ```
 
 Supporting directories:
@@ -60,12 +61,19 @@ Supporting directories:
    ```
 
 3. **Configure environment variables** by copying the template and filling in
-   credentials:
+   credentials (Gemini Flash is the default provider):
 
    ```bash
    cp .env.example .env
-   # Edit .env to provide OPENAI_API_KEY and other overrides
+   # Edit .env to provide GOOGLE_API_KEY (or OPENAI_API_KEY if using OpenAI)
    ```
+
+   Key fields:
+
+   - `PROVIDER`: `google` (default) or `openai`
+   - `GOOGLE_API_KEY` / `GOOGLE_MODEL` (e.g., `gemini-1.5-flash`)
+   - `OPENAI_API_KEY` / `OPENAI_MODEL` if you prefer OpenAI
+   - `TOP_K` / `RERANK_K`: default to 3 for a compact 3-document MVP
 
 ## Ingesting documents
 
