@@ -4,3 +4,5 @@ __pycache__/
 .env
 app/store/index.faiss
 app/store/meta.json
+*.pdf
+venv/
