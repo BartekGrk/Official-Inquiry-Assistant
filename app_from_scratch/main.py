@@ -16,6 +16,11 @@ if __name__ == "__main__":
     text = main_load_document(str(p))
     print(text)
 
+# Build API for upload
+    # Upload PDF for database update
+    # Send inquiry text and wait for result back 
+
+
 # Anonymize pdfs
 
 # Create document metadata
